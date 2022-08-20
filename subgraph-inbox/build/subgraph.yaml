@@ -1,0 +1,24 @@
+specVersion: 0.0.4
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: UpgradeBeaconProxy
+    network: mainnet
+    source:
+      address: "0xf7af65596a16740b16cf755f3a43206c96285da0"
+      abi: UpgradeBeaconProxy
+      startBlock: 14970241
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Process
+      abis:
+        - name: UpgradeBeaconProxy
+          file: UpgradeBeaconProxy/abis/UpgradeBeaconProxy.json
+      eventHandlers:
+        - event: Process(indexed bytes32)
+          handler: handleProcess
+      file: UpgradeBeaconProxy/UpgradeBeaconProxy.wasm

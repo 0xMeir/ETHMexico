@@ -1,0 +1,29 @@
+specVersion: 0.0.4
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: InterchainGasPaymaster
+    network: optimism
+    source:
+      address: "0xc5D6aCaafBCcEC6D7fD7d92F4509befce641c563"
+      abi: InterchainGasPaymaster
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - GasPayment
+        - Initialized
+        - OwnershipTransferred
+      abis:
+        - name: InterchainGasPaymaster
+          file: InterchainGasPaymaster/abis/InterchainGasPaymaster.json
+      eventHandlers:
+        - event: GasPayment(indexed address,uint256,uint256)
+          handler: handleGasPayment
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: InterchainGasPaymaster/InterchainGasPaymaster.wasm
