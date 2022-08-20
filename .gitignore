@@ -1,3 +1,10 @@
+rust/vendor/
+rust/tmp_db
+rust/tmp.env
+tmp.env
+.DS_STORE
+
+
 # Logs
 logs
 *.log
