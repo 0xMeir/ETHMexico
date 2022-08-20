@@ -1,0 +1,7 @@
+{
+  "mainnet": {
+    "UpgradeBeaconProxy": {
+      "address": "0xf7af65596a16740b16cf755f3a43206c96285da0"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "optimism": {
+    "InterchainGasPaymaster": {
+      "address": "0xc5D6aCaafBCcEC6D7fD7d92F4509befce641c563"
+    }
+  }
+}

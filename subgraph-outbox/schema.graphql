@@ -1,0 +1,6 @@
+type RelayerEarningsDaily @entity {
+  id: ID!
+  amount: BigInt!
+  date: Int!
+  transactionAmount: BigInt!
+}
