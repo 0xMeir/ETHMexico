@@ -4,6 +4,34 @@ import { useCallback, useEffect, useState } from 'react';
 import { getAllOutboxEarned, getAllInboxFees } from "./events"
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Line }            from 'react-chartjs-2'
+import styled from 'styled-components'
+import MyImage from './abacast-logo.png';
+
+const ChartItem = styled.div`
+  width: 87%;
+  margin-left: auto;
+  margin-right: auto;
+
+  canvas{
+    border: 10px solid #223345;
+    border-radius: 5px;
+  }
+`
+
+const LogoWrap = styled.div`
+  width: 38%;
+  margin-left: auto;
+  margin-right: auto;
+
+  img{
+    width: 100%;
+    height: auto;
+  }
+`
+
+const TextWrap = styled.div`
+  font-size: 22px;
+`
 
 export const options = {
   scales: {
@@ -99,10 +127,14 @@ export default function App() {
   return (
     <div style={{textAlign:'center'}}>
       <br/><br/>
-      <h1>Abacast</h1>
-      <p>Abacus relayer analytics and incentivization</p>
+      <LogoWrap>
+        <img src={MyImage} alt="horse" />
+      </LogoWrap>
+      
+      <TextWrap><p>Abacus relayer analytics and incentivization</p></TextWrap>
+      
       <br/><br/>
-      <Chart/>
+      <ChartItem><Chart></Chart></ChartItem>
       
     </div>
   );
