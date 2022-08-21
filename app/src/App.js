@@ -1,6 +1,10 @@
 // Import everything needed to use the `useQuery` hook
 import { useQuery, gql } from '@apollo/client';
+import { useCallback, useEffect, useState } from 'react';
 import { getAllOutboxEarned, getAllInboxFees } from "./events"
+import { Chart as ChartJS } from 'chart.js/auto'
+import { Line }            from 'react-chartjs-2'
+
 
 const GET_LOCATIONS = gql`
   query GetLocations {
@@ -13,12 +17,50 @@ const GET_LOCATIONS = gql`
   }
 `;
 
+export const options = {
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+    xAxes: [{
+      type: 'time',
+      position: 'bottom',
+      time: {
+        displayFormats: {'day': 'MM/YY'},
+        tooltipFormat: 'DD/MM/YY',
+        unit: 'month',
+       }
+    }]
+  },
+  
+};
+
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+const data = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+  datasets: [
+    {
+      label: "First dataset",
+      data: [330, 530, 850, -412, -700, 800],
+      fill: false,
+      borderColor: "rgba(75,192,192,1)",
+    },
+    {
+      label: "Second dataset",
+      data: [33, 25, 35, 51, 54, 76],
+      fill: false,
+      borderColor: "#742774"
+    }
+  ]
+};
+
 function DisplayLocations() {
   const { loading, error, data } = useQuery(GET_LOCATIONS);
 
 
-    //const test = getAllOutboxEarned();
-    const test = getAllInboxFees();
+  //const test = getAllOutboxEarned();    
+  useEffect(() => {const test = getAllInboxFees()}, []);
 
 
   if (loading) return <p>Loading...</p>;
@@ -37,8 +79,10 @@ function DisplayLocations() {
 }
 
 export default function App() {
+
   return (
     <div>
+      <Line options={options} data={data} />
       <h2>My first Apollo app 🚀</h2>
       <br/>
       <DisplayLocations />
