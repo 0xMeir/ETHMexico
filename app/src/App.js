@@ -1,5 +1,6 @@
 // Import everything needed to use the `useQuery` hook
 import { useQuery, gql } from '@apollo/client';
+import { getAllOutboxEarned, getAllInboxFees } from "./events"
 
 const GET_LOCATIONS = gql`
   query GetLocations {
@@ -14,6 +15,11 @@ const GET_LOCATIONS = gql`
 
 function DisplayLocations() {
   const { loading, error, data } = useQuery(GET_LOCATIONS);
+
+
+    //const test = getAllOutboxEarned();
+    const test = getAllInboxFees();
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
