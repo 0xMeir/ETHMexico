@@ -43,8 +43,8 @@ export const getAllInboxFees = async () =>  {
   const inbox = "0xf7af65596a16740b16cf755f3a43206c96285da0"
   const contract = new ethers.Contract(inbox, InboxABI, provider);
   let filter = contract.filters.Process();
-  let events = await contract.queryFilter(filter, 14970241);
-  console.log(events)
+  let events = await contract.queryFilter(filter, 15150000);
+  // console.log(events)
   for (var i=0; i< events.length; i++){
     const timestamp = (await provider.getBlock(events[i].blockNumber)).timestamp;
     var dt = new Date(timestamp * 1000)
@@ -52,9 +52,9 @@ export const getAllInboxFees = async () =>  {
 
 
     let tx = await events[i].getTransactionReceipt();
-    console.log("tx",tx);
+    // console.log("tx",tx);
     let spent = tx.effectiveGasPrice.mul(tx.cumulativeGasUsed).div(ethers.BigNumber.from(10).pow(ethers.BigNumber.from(9))).toNumber()
-    console.log("spent in wei", spent)
+    // console.log("spent in wei", spent)
 
     if (days[dtKey]){
       days[dtKey] = days[dtKey] + spent
