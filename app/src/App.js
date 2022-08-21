@@ -5,87 +5,105 @@ import { getAllOutboxEarned, getAllInboxFees } from "./events"
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Line }            from 'react-chartjs-2'
 
-
-const GET_LOCATIONS = gql`
-  query GetLocations {
-    locations {
-      id
-      name
-      description
-      photo
-    }
-  }
-`;
-
 export const options = {
   scales: {
     y: {
       beginAtZero: true,
     },
-    xAxes: [{
-      type: 'time',
-      position: 'bottom',
-      time: {
-        displayFormats: {'day': 'MM/YY'},
-        tooltipFormat: 'DD/MM/YY',
-        unit: 'month',
-       }
-    }]
+    /*xAxis: {
+      ticks: {
+        beginAtZero: true,
+        callback: function(value, index, values) {
+          if (index === 0 || index === 1) { 
+            return value
+          }
+        }
+      },
+      gridLines: {
+        display: false
+      }
+    }*/
   },
-  
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-const data = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-  datasets: [
-    {
-      label: "First dataset",
-      data: [330, 530, 850, -412, -700, 800],
-      fill: false,
-      borderColor: "rgba(75,192,192,1)",
-    },
-    {
-      label: "Second dataset",
-      data: [33, 25, 35, 51, 54, 76],
-      fill: false,
-      borderColor: "#742774"
-    }
-  ]
-};
-
-function DisplayLocations() {
-  const { loading, error, data } = useQuery(GET_LOCATIONS);
 
 
-  //const test = getAllOutboxEarned();    
-  useEffect(() => {const test = getAllInboxFees()}, []);
+function Chart() {
 
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+/*
+{"2022/8/9":-994870926.5,"2022/8/10":-463464129,"2022/8/11":-1202425453,"2022/8/12":-753620417,"2022/8/13":-456948815,"2022/8/14":-655639543,"2022/8/15":-734616709,"2022/8/16":-561250613,"2022/8/17":-907723004,"2022/8/18":-1275292627,"2022/8/19":-807875832,"2022/8/20":-368925630}
+*/
 
-  return data.locations.map(({ id, name, description, photo }) => (
-    <div key={id}>
-      <h3>{name}</h3>
-      <img width="400" height="250" alt="location-reference" src={`${photo}`} />
-      <br />
-      <b>About this location:</b>
-      <p>{description}</p>
-      <br />
-    </div>
-  ));
+  const [chartData, setChartData] = useState({});
+  const [loading, setLoading] = useState(true);
+  //    
+  useEffect(() => {
+    (async () => {
+      /*const outboxres = await getAllOutboxEarned();
+      const inboxres = await getAllInboxFees();
+      let netValue = {};
+      let gweibase = 1000000000;
+      for (var key in outboxres){
+        let outboxValueInGwei = outboxres[key] / gweibase // 10^9
+
+        if (inboxres[key]){
+          netValue[key] =  outboxValueInGwei - inboxres[key]
+        }
+      }
+
+      // only show dates where we have data on how much was both sent and receieved... in case contracts changed for inbox gasy fees etc
+
+      console.log("NET VALUE OBJ", netValue, JSON.stringify(netValue));
+*/
+      let netValue = {"2022/8/9":-994870926.5,"2022/8/10":-463464129,"2022/8/11":-1202425453,"2022/8/12":-753620417,"2022/8/13":-456948815,"2022/8/14":-655639543,"2022/8/15":-734616709,"2022/8/16":-561250613,"2022/8/17":-907723004,"2022/8/18":-1275292627,"2022/8/19":-807875832,"2022/8/20":-368925630}
+
+
+      let myLabels = [];
+      let myValues = [];
+      for (var key in netValue){
+        myLabels.push(key)
+        myValues.push(netValue[key])
+      }
+
+      const mydata = {
+        labels: myLabels,
+        datasets: [
+          {
+            label: "Relayer net profit/loss (in GWEI)",
+            data: myValues,
+            fill: false,
+            borderColor: "rgba(75,192,192,1)",
+          },
+        ]
+      };
+
+
+      setChartData(mydata);
+      setLoading(false);
+
+    })();
+  }, []);
+
+
+  if (loading) return <p>Loading... this can take a while.</p>;
+
+
+  return (
+    <Line options={options} data={chartData} />
+  );
 }
 
 export default function App() {
 
   return (
-    <div>
-      <Line options={options} data={data} />
-      <h2>My first Apollo app 🚀</h2>
-      <br/>
-      <DisplayLocations />
+    <div style={{textAlign:'center'}}>
+      <br/><br/>
+      <h1>Abacast</h1>
+      <p>Abacus relayer analytics and incentivization</p>
+      <br/><br/>
+      <Chart/>
+      
     </div>
   );
 }
